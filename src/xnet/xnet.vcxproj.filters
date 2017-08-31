@@ -7,21 +7,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="server.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="xnet.c">
+    <ClCompile Include="game.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="client.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="server.h">
+    <ClInclude Include="game.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="xnet.h">
+    <ClInclude Include="client.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

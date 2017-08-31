@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -144,12 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
-    <ClCompile Include="server.c" />
-    <ClCompile Include="xnet.c" />
+    <ClCompile Include="client.c" />
+    <ClCompile Include="game.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="server.h" />
-    <ClInclude Include="xnet.h" />
+    <ClInclude Include="client.h" />
+    <ClInclude Include="define.h" />
+    <ClInclude Include="game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
