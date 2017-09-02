@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xnet", "xnet\xnet.vcxproj", "{CAF492B0-34E9-42D8-9E40-8F740BC5C636}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libuv", "deps\libuv\libuv.vcxproj", "{33066374-88CB-CB8D-15DA-61032886329A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xgame", "xgame\xgame.vcxproj", "{14782A9E-0928-44C7-A227-1E8FB52F730A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{33066374-88CB-CB8D-15DA-61032886329A}.Release|x64.Build.0 = Release|x64
 		{33066374-88CB-CB8D-15DA-61032886329A}.Release|x86.ActiveCfg = Release|Win32
 		{33066374-88CB-CB8D-15DA-61032886329A}.Release|x86.Build.0 = Release|Win32
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Debug|x64.ActiveCfg = Debug|x64
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Debug|x64.Build.0 = Debug|x64
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Debug|x86.ActiveCfg = Debug|Win32
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Debug|x86.Build.0 = Debug|Win32
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Release|x64.ActiveCfg = Release|x64
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Release|x64.Build.0 = Release|x64
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Release|x86.ActiveCfg = Release|Win32
+		{14782A9E-0928-44C7-A227-1E8FB52F730A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
