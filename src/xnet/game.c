@@ -217,7 +217,7 @@ void AcceptGame(uv_stream_t* stream, int status)
 }
 
 
-int InitGame(const char* ip, int port)
+int InitGame(const char* ip, uint port)
 {
 	memset(g_Games, 0, sizeof(g_Games));
 

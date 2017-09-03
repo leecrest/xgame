@@ -1,19 +1,32 @@
 #include "xgame.h"
+#include "engine.h"
 
-unsigned char g_GameID = 0;
+
+
+
+byte g_GameID = 0;
 lua_State* g_Lua;
 uv_loop_t* g_Loop;
 FILE* g_LogFile = 0;
-
+GameConfig g_Config;
 
 // 日志功能
-int InitLog(const char* file)
+int InitLog()
 {
 	if (g_LogFile) return 0;
-	g_LogFile = fopen(file, "w");
+
+	// 检查日志目录是否存在
+	char buf[256];
+	strcpy(buf, g_Config.log_path);
+	uv_fs_t req;
+	uv_fs_mkdir(g_Loop, &req, buf, 0755, NULL);
+	strcat(buf, "/engine");
+	uv_fs_mkdir(g_Loop, &req, buf, 0755, NULL);
+	strcat(buf, "/xgame.log");
+	g_LogFile = fopen(buf, "w");
 	if (g_LogFile == NULL)
 	{
-		printf("[InitLog] open file error! %s", file);
+		printf("[InitLog] open file error! %s", buf);
 		return 0;
 	}
 	return 1;
@@ -21,9 +34,7 @@ int InitLog(const char* file)
 
 void Log(const char* fmt, ...)
 {
-	if (!g_LogFile) return;
-
-	static char logbuff[512];
+	static char logbuff[1024];
 	va_list ap;
 	va_start(ap, fmt);
 	vsprintf(logbuff, fmt, ap);
@@ -32,9 +43,11 @@ void Log(const char* fmt, ...)
 	static char timestr[32];
 	time_t t = time(0);
 	strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", localtime(&t));
-
-	fprintf(g_LogFile, "%s (%d)%s\n", timestr, g_GameID, logbuff);
-	fflush(g_LogFile);
+	if (g_LogFile)
+	{
+		fprintf(g_LogFile, "%s (%d)%s\n", timestr, g_GameID, logbuff);
+		fflush(g_LogFile);
+	}
 	printf("%s (%d)%s\n", timestr, g_GameID, logbuff);
 }
 
@@ -161,21 +174,64 @@ int ExecFile(const char* file)
 }
 
 
+int LoadConfig()
+{
+	lua_State* lua = luaL_newstate();
+	if (lua == NULL) {
+		Log("luaL_newstate has failed");
+		return 0;
+	}
+	// 加载基础库
+	luaL_openlibs(lua);
+	// 加载配置文件
+	int ret = luaL_dofile(lua, "xgame.cfg");
+	if (ret)
+	{
+		Log("xgame.cfg error! %s", lua_tostring(lua, -1));
+		return 0;
+	}
+	lua_getglobal(lua, "host_id");
+	lua_getglobal(lua, "log_path");
+	lua_getglobal(lua, "work_path");
+	lua_getglobal(lua, "local_ip");
+	lua_getglobal(lua, "local_port");
+	g_Config.host_id = lua_tointeger(lua, -5);
+	strcpy(g_Config.log_path, lua_tostring(lua, -4));
+	strcpy(g_Config.work_path, lua_tostring(lua, -3));
+	strcpy(g_Config.local_ip, lua_tostring(lua, -2));
+	g_Config.local_port = lua_tointeger(lua, -1);
 
-int main(int argc, char* argv[]) {
+	lua_close(lua);
+	return 1;
+}
+
+// 启动参数： xgame.exe 0
+int main(int argc, char* argv[])
+{
+	if (argc < 2)
+	{
+		printf("useage: xgame.exe gameid(0-31)");
+		return 0;
+	}
+	int idx = atoi(argv[1]);
+	if (idx < 0 || idx >= 32)
+	{
+		printf("useage: xgame.exe gameid(0-31)");
+		return 0;
+	}
+	g_GameID = (byte)idx;
 	argv = uv_setup_args(argc, argv);
+
+	// 加载配置文件
+	int ret = LoadConfig();
+	if (ret != 1) return;
 
 	// 初始化loop
 	g_Loop = uv_default_loop();
-
-	// 启动日志
-	int ret = InitLog("xgame.log");
-	if (ret != 1) return 0;
-
 	// Lua虚拟机初始化
 	g_Lua = luaL_newstate();
 	if (g_Lua == NULL) {
-		fprintf(stderr, "luaL_newstate has failed\n");
+		Log("luaL_newstate has failed\n");
 		return 1;
 	}
 	// 加载基础库
@@ -183,6 +239,7 @@ int main(int argc, char* argv[]) {
 
 	// 加载内建库
 	const luaL_Reg libs[] = {
+		{ "engine", luaopen_engine },
 		{ NULL, NULL },
 	};
 	for (const luaL_Reg* lib = libs; lib->func; lib++) {
@@ -190,19 +247,27 @@ int main(int argc, char* argv[]) {
 		lua_pop(g_Lua, 1);
 	}
 
+	// 设置工作目录
+	uv_chdir(g_Config.work_path);
+
+	// 启动日志
+	ret = InitLog();
+	if (ret != 1) return 0;
+
+	Log("game server start! host=%d, gsid=%d", g_Config.host_id, g_GameID);
+
 	// 和网关通信
-	ret = Connect2Net();
-	if (ret != 1) return ret;
+	ret = Connect2Net(g_Config.local_ip, g_Config.local_port);
+	if (ret != 1) return 0;
 
 	// 加载框架层脚本
 	ret = ExecFile("base/preload.lua");
-	if (ret != 1) { return ret; }
+	if (ret != 1) return 0;
 
 	// 启动循环
 	uv_run(g_Loop, UV_RUN_DEFAULT);
 
-	if (g_Lua == NULL) return;
-	luaL_dostring(g_Lua, "lengine.stop()");
+	luaL_dostring(g_Lua, "engine.stop()");
 	lua_close(g_Lua);
 	g_Lua = NULL;
 	uv_loop_close(g_Loop);

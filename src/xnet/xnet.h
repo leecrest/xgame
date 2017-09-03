@@ -9,8 +9,8 @@ void Log(const char* fmt, ...);
 
 
 
-int InitGame(const char* ip, int port);
-int InitClient(const char* ip, int port);
+int InitGame(const char* ip, uint port);
+int InitClient(const char* ip, uint port);
 
 int Send2Game(byte gsid, GameCmd* cmd, const char* data, uint size);
 

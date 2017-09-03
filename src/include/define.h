@@ -3,13 +3,19 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <uv.h>
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
+#include <io.h>
+#include <process.h>
 
+#include <uv.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 
 typedef unsigned char byte;
 typedef unsigned int uint;

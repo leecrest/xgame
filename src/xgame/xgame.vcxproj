@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\include\;..\deps\libuv\include\;..\deps\lua\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\deps\libuv\Release\lib\</AdditionalLibraryDirectories>
@@ -102,7 +102,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\include\;..\deps\libuv\include\;..\deps\lua\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\deps\libuv\Release\lib\</AdditionalLibraryDirectories>
@@ -116,7 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\include\;..\deps\libuv\include\;..\deps\lua\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -132,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\include\;..\deps\libuv\include\;..\deps\lua\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -175,7 +175,8 @@
     <ClCompile Include="..\deps\lua\src\lutf8lib.c" />
     <ClCompile Include="..\deps\lua\src\lvm.c" />
     <ClCompile Include="..\deps\lua\src\lzio.c" />
-    <ClCompile Include="xgame.c" />
+    <ClCompile Include="engine.c" />
+    <ClCompile Include="main.c" />
     <ClCompile Include="xserver.c" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +206,8 @@
     <ClInclude Include="..\deps\lua\src\lundump.h" />
     <ClInclude Include="..\deps\lua\src\lvm.h" />
     <ClInclude Include="..\deps\lua\src\lzio.h" />
+    <ClInclude Include="..\include\define.h" />
+    <ClInclude Include="engine.h" />
     <ClInclude Include="xgame.h" />
   </ItemGroup>
   <ItemGroup>

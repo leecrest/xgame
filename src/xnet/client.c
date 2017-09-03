@@ -246,7 +246,7 @@ void AcceptClient(uv_stream_t* stream, int status)
 }
 
 
-int InitClient(const char* ip, int port)
+int InitClient(const char* ip, uint port)
 {
 	memset(g_Clients, 0, sizeof(g_Clients));
 
