@@ -1,8 +1,4 @@
-#include "xnet.h"
-
-#define MAX_GAME_CONN			(32)				// 服务器最大节点数量
-#define GAME_BUFF_SIZE			(160*1024*1024)		// 服务器节点之间传递数据的限制
-#define GAME_BUFF_INIT			(10240)				// 初始大小
+#include "xgate.h"
 
 #define MASTER_GAME_ID			(0)
 #define MAX_CLIENT_PACKAGE_LEN	(16*1024)
@@ -93,48 +89,55 @@ void ReadGame(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
 	game->readsize += nread;
 	if (nread == 0 || game->readsize < GAME_CMD_SIZE) return;
 
-	// 拆包粘包处理
-	GameCmd* pack = (GameCmd*)game->readbuff.base;
-	if (pack->size + GAME_CMD_SIZE < game->readsize) return;
+	while (game->readsize >= GAME_CMD_SIZE)
+	{
+		// 拆包粘包处理
+		GameCmd* pack = (GameCmd*)game->readbuff.base;
+		if (pack->size + GAME_CMD_SIZE < game->readsize) break;
 
-	char* data = game->readbuff.base + GAME_CMD_SIZE;
-	int ret = 0;
-	if (pack->cmd == CMD_G2N_VFD2GSID)
-	{
-		ret = SetClient2GS(pack->vfd, pack->value);
-		if (ret == 1)
+		char* data = game->readbuff.base + GAME_CMD_SIZE;
+		int ret = 0;
+		switch (pack->cmd)
 		{
-			GameCmd cmd;
-			cmd.cmd = CMD_N2G_ADDVFD;
-			cmd.size = 0;
-			cmd.value = 0;
-			cmd.vfd = pack->vfd;
-			Send2Game(pack->value, &cmd, NULL, 0);
-		}
-	}
-	else if (pack->cmd == CMD_G2N_SEND2VFD)
-	{
-		Send2Vfd(pack->vfd, data, pack->size);
-	}
-	else if (pack->cmd == CMD_G2N_SEND2VFDS)
-	{
-		// 数据区的格式：
-		// 前2字节表示vfd长度
-		// 中间每4个字节表示一个vfd
-		// 最后是数据区
-		unsigned short count = *(unsigned short*)data;
-		VFD* vfd = data + sizeof(unsigned short);
-		char* buff = vfd + count * sizeof(VFD);
-		uint buffsize = pack->size - sizeof(unsigned short) - count * sizeof(VFD);
-		for (unsigned short i = 0; i < count; i++)
+		case CMD_G2N_VFD2GSID:
+			ret = SetClient2GS(pack->vfd, pack->value);
+			if (ret == 1)
+			{
+				GameCmd cmd;
+				cmd.cmd = CMD_N2G_ADDVFD;
+				cmd.size = 0;
+				cmd.value = 0;
+				cmd.vfd = pack->vfd;
+				Send2Game(pack->value, &cmd, NULL, 0);
+			}
+			break;
+		case CMD_G2N_SEND2VFD:
+			Send2Vfd(pack->vfd, data, pack->size);
+			break;
+		case CMD_G2N_SEND2VFDS:
 		{
-			Send2Vfd(*vfd, buff, buffsize);
-			vfd++;
+			// 数据区的格式：
+			// 前2字节表示vfd长度
+			// 中间每4个字节表示一个vfd
+			// 最后是数据区
+			unsigned short count = *(unsigned short*)data;
+			VFD* vfd = data + sizeof(unsigned short);
+			char* buff = vfd + count * sizeof(VFD);
+			uint buffsize = pack->size - sizeof(unsigned short) - count * sizeof(VFD);
+			for (unsigned short i = 0; i < count; i++)
+			{
+				Send2Vfd(*vfd, buff, buffsize);
+				vfd++;
+			}
+			break;
 		}
+		default:
+			break;
+		}
+		// 将数据往前移动，已处理的包丢掉
+		game->readsize -= pack->size - GAME_CMD_SIZE;
+		memcpy(game->readbuff.base, data + pack->size, game->readsize);
 	}
-	// 将数据往前移动，已处理的包丢掉
-	game->readsize -= pack->size - GAME_CMD_SIZE;
-	memcpy(game->readbuff.base, data + pack->size, game->readsize);
 }
 
 void OnSendGame(uv_write_t* req, int status)
@@ -213,7 +216,7 @@ void AcceptGame(uv_stream_t* stream, int status)
 	cmd.cmd = CMD_N2G_SYNCGSID;
 	cmd.value = game->id;
 	cmd.size = 0;
-	//Send2Game(game, &cmd);
+	Send2Game(game, &cmd, NULL, 0);
 }
 
 

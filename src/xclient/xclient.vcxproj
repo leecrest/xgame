@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{14782A9E-0928-44C7-A227-1E8FB52F730A}</ProjectGuid>
-    <RootNamespace>xgame</RootNamespace>
+    <ProjectGuid>{15155522-F30E-4A90-912A-9884395CB74D}</ProjectGuid>
+    <RootNamespace>xclient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -35,7 +35,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -48,7 +48,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\deps\libuv\Release\lib\</AdditionalLibraryDirectories>
@@ -102,7 +102,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\deps\libuv\Release\lib\</AdditionalLibraryDirectories>
@@ -116,7 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -132,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\libuv\include\;..\deps\lua\src\;..\include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -142,76 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\deps\lua\src\lapi.c" />
-    <ClCompile Include="..\deps\lua\src\lauxlib.c" />
-    <ClCompile Include="..\deps\lua\src\lbaselib.c" />
-    <ClCompile Include="..\deps\lua\src\lbitlib.c" />
-    <ClCompile Include="..\deps\lua\src\lcode.c" />
-    <ClCompile Include="..\deps\lua\src\lcorolib.c" />
-    <ClCompile Include="..\deps\lua\src\lctype.c" />
-    <ClCompile Include="..\deps\lua\src\ldblib.c" />
-    <ClCompile Include="..\deps\lua\src\ldebug.c" />
-    <ClCompile Include="..\deps\lua\src\ldo.c" />
-    <ClCompile Include="..\deps\lua\src\ldump.c" />
-    <ClCompile Include="..\deps\lua\src\lfunc.c" />
-    <ClCompile Include="..\deps\lua\src\lgc.c" />
-    <ClCompile Include="..\deps\lua\src\linit.c" />
-    <ClCompile Include="..\deps\lua\src\liolib.c" />
-    <ClCompile Include="..\deps\lua\src\llex.c" />
-    <ClCompile Include="..\deps\lua\src\lmathlib.c" />
-    <ClCompile Include="..\deps\lua\src\lmem.c" />
-    <ClCompile Include="..\deps\lua\src\loadlib.c" />
-    <ClCompile Include="..\deps\lua\src\lobject.c" />
-    <ClCompile Include="..\deps\lua\src\lopcodes.c" />
-    <ClCompile Include="..\deps\lua\src\loslib.c" />
-    <ClCompile Include="..\deps\lua\src\lparser.c" />
-    <ClCompile Include="..\deps\lua\src\lstate.c" />
-    <ClCompile Include="..\deps\lua\src\lstring.c" />
-    <ClCompile Include="..\deps\lua\src\lstrlib.c" />
-    <ClCompile Include="..\deps\lua\src\ltable.c" />
-    <ClCompile Include="..\deps\lua\src\ltablib.c" />
-    <ClCompile Include="..\deps\lua\src\ltm.c" />
-    <ClCompile Include="..\deps\lua\src\lundump.c" />
-    <ClCompile Include="..\deps\lua\src\lutf8lib.c" />
-    <ClCompile Include="..\deps\lua\src\lvm.c" />
-    <ClCompile Include="..\deps\lua\src\lzio.c" />
-    <ClCompile Include="engine.c" />
-    <ClCompile Include="xgame.c" />
-    <ClCompile Include="gate.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\deps\lua\src\lapi.h" />
-    <ClInclude Include="..\deps\lua\src\lauxlib.h" />
-    <ClInclude Include="..\deps\lua\src\lcode.h" />
-    <ClInclude Include="..\deps\lua\src\lctype.h" />
-    <ClInclude Include="..\deps\lua\src\ldebug.h" />
-    <ClInclude Include="..\deps\lua\src\ldo.h" />
-    <ClInclude Include="..\deps\lua\src\lfunc.h" />
-    <ClInclude Include="..\deps\lua\src\lgc.h" />
-    <ClInclude Include="..\deps\lua\src\llex.h" />
-    <ClInclude Include="..\deps\lua\src\llimits.h" />
-    <ClInclude Include="..\deps\lua\src\lmem.h" />
-    <ClInclude Include="..\deps\lua\src\lobject.h" />
-    <ClInclude Include="..\deps\lua\src\lopcodes.h" />
-    <ClInclude Include="..\deps\lua\src\lparser.h" />
-    <ClInclude Include="..\deps\lua\src\lprefix.h" />
-    <ClInclude Include="..\deps\lua\src\lstate.h" />
-    <ClInclude Include="..\deps\lua\src\lstring.h" />
-    <ClInclude Include="..\deps\lua\src\ltable.h" />
-    <ClInclude Include="..\deps\lua\src\ltm.h" />
-    <ClInclude Include="..\deps\lua\src\lua.h" />
-    <ClInclude Include="..\deps\lua\src\lua.hpp" />
-    <ClInclude Include="..\deps\lua\src\luaconf.h" />
-    <ClInclude Include="..\deps\lua\src\lualib.h" />
-    <ClInclude Include="..\deps\lua\src\lundump.h" />
-    <ClInclude Include="..\deps\lua\src\lvm.h" />
-    <ClInclude Include="..\deps\lua\src\lzio.h" />
-    <ClInclude Include="..\include\define.h" />
-    <ClInclude Include="engine.h" />
-    <ClInclude Include="xgame.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\deps\lua\src\Makefile" />
+    <ClCompile Include="xclient.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

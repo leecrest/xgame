@@ -115,14 +115,11 @@
     <ClCompile Include="..\deps\lua\src\lzio.c">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="xgate.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="xnet.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\define.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -203,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="..\deps\lua\src\lzio.h">
       <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="xgate.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

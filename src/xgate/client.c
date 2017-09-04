@@ -1,4 +1,4 @@
-#include "xnet.h"
+#include "xgate.h"
 
 #define READ_BUFF_SIZE	1024		// 读取来自客户端的请求的缓冲区大小
 #define WRITE_BUFF_SIZE (10*1024)	// 发送到客户端的数据的缓冲区大小
@@ -11,7 +11,6 @@ struct _ClientConn
 	VFD vfd;
 	byte gsid;
 	int seed;
-	byte seedsend;
 	uv_tcp_t* handle;
 	
 	uv_write_t writereq;
@@ -31,10 +30,10 @@ extern unsigned char g_NetID;
 
 void SendClientSeed(ClientConn* client)
 {
-	char buf[5];
+	byte buf[5] = { 0 };
 	buf[0] = 4;
-	*(int*)(buf + 1) = client->seed;
-	Send2Client(client, buf, 5);
+	memcpy(buf + 1, &client->seed, sizeof(int));
+	Send2Client(client, buf, sizeof(buf));
 }
 
 void Encode(int seed, byte* buf, uint len)
@@ -132,26 +131,31 @@ void ReadClient(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
 	}
 	ClientConn* client = (ClientConn*)handle->data;
 	client->readsize += nread;
-	if (nread == 0 || client->readsize < CLIENT_PACK_MIN) return;
+	if (client->readsize < CLIENT_PACK_MIN) return;
 
-	// 拆包粘包处理，客户端的数据包定义：2字节长度 + 数据
-	unsigned short len = *(unsigned short*)client->readbuff.base;
-	if (client->readsize - CLIENT_PACK_HEAD < len) return;
-
-	char* data = client->readbuff.base + CLIENT_PACK_HEAD;
-	// 上行数据需要解密
-	Decode(client->seed, (byte*)data, len);
-
+	unsigned short len;
 	GameCmd pack;
 	pack.cmd = CMD_N2G_DATA;
 	pack.vfd = client->vfd;
 	pack.value = 0;
-	pack.size = len;
-	Send2Game(client->gsid, &pack, data, len);
+	pack.size = 0;
+	while (client->readsize >= CLIENT_PACK_MIN)
+	{
+		// 拆包粘包处理，客户端的数据包定义：2字节长度 + 数据
+		len = *(unsigned short*)client->readbuff.base;
+		if (client->readsize - CLIENT_PACK_HEAD < len) break;
 
-	// 将数据往前移动，已处理的包丢掉
-	client->readsize -= CLIENT_PACK_HEAD + len;
-	memcpy(client->readbuff.base, data + len + 2, client->readsize);
+		char* data = client->readbuff.base + CLIENT_PACK_HEAD;
+		// 上行数据需要解密
+		Decode(client->seed, (byte*)data, len);
+
+		pack.size = len;
+		Send2Game(client->gsid, &pack, data, len);
+
+		// 将数据往前移动，已处理的包丢掉
+		client->readsize -= CLIENT_PACK_HEAD + len;
+		memcpy(client->readbuff.base, data + len + 2, client->readsize);
+	}
 }
 
 
@@ -223,7 +227,6 @@ void AcceptClient(uv_stream_t* stream, int status)
 	client->vfd = AllocVfd();
 	client->gsid = 0;
 	client->seed = rand();
-	client->seedsend = 0;
 	client->handle = handle;
 	handle->data = client;
 
@@ -239,7 +242,7 @@ void AcceptClient(uv_stream_t* stream, int status)
 
 	int idx = VFD2IDX(client->vfd);
 	g_Clients[idx] = client;
-	Log("[Client]new client = %d", client->vfd);
+	Log("[Client]new client: vfd=%d, seed=%d", client->vfd, client->seed);
 	
 	// 发送随机种子
 	SendClientSeed(client);

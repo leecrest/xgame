@@ -23,6 +23,10 @@ typedef unsigned int uint;
 typedef unsigned int VFD;
 
 
+#define MAX_GAME_CONN		(32)				// 服务器最大节点数量
+#define GAME_BUFF_SIZE		(160*1024*1024)		// 服务器节点之间传递数据的限制
+#define GAME_BUFF_INIT		(10240)				// 初始大小
+
 // 节点之间的通信格式
 // 操作类型
 #define CMD_N2G_SYNCGSID	0x01	// 一般由net发送给game，同步gameid

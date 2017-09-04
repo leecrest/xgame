@@ -110,13 +110,13 @@
     <ClCompile Include="..\deps\lua\src\lzio.c">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="xserver.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="engine.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="gate.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xgame.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

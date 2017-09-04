@@ -1,5 +1,5 @@
 
-#include "xnet.h"
+#include "xgate.h"
 
 struct _NetConfig
 {
@@ -32,7 +32,7 @@ int InitLog(const char* path)
 	uv_fs_mkdir(g_Loop, &req, buf, 0755, NULL);
 	strcat(buf, "/engine");
 	uv_fs_mkdir(g_Loop, &req, buf, 0755, NULL);
-	strcat(buf, "/xnet.log");
+	strcat(buf, "/xgate.log");
 	g_LogFile = fopen(buf, "w");
 	if (g_LogFile == NULL)
 	{
@@ -133,6 +133,8 @@ int main(int argc, char* argv[])
 	int size = 255;
 	uv_cwd(buf, &size);
 	Log("work path: %s", buf);
+
+	srand(time(NULL));
 
 	ret = InitGame(g_Config.local_ip, g_Config.local_port);
 	if (ret != 1) return 0;

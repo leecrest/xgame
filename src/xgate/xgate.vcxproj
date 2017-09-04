@@ -21,8 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{CAF492B0-34E9-42D8-9E40-8F740BC5C636}</ProjectGuid>
-    <RootNamespace>xnet</RootNamespace>
+    <RootNamespace>xgate</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>xgate</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -177,7 +178,7 @@
     <ClCompile Include="..\deps\lua\src\lutf8lib.c" />
     <ClCompile Include="..\deps\lua\src\lvm.c" />
     <ClCompile Include="..\deps\lua\src\lzio.c" />
-    <ClCompile Include="main.c" />
+    <ClCompile Include="xgate.c" />
     <ClCompile Include="client.c" />
     <ClCompile Include="game.c" />
   </ItemGroup>
@@ -209,7 +210,7 @@
     <ClInclude Include="..\deps\lua\src\lvm.h" />
     <ClInclude Include="..\deps\lua\src\lzio.h" />
     <ClInclude Include="..\include\define.h" />
-    <ClInclude Include="xnet.h" />
+    <ClInclude Include="xgate.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\deps\lua\src\Makefile" />

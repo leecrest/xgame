@@ -255,19 +255,20 @@ int main(int argc, char* argv[])
 	if (ret != 1) return 0;
 
 	Log("game server start! host=%d, gsid=%d", g_Config.host_id, g_GameID);
+	srand(time(NULL));
 
 	// 和网关通信
-	ret = Connect2Net(g_Config.local_ip, g_Config.local_port);
+	ret = Connect2Gate(g_Config.local_ip, g_Config.local_port);
 	if (ret != 1) return 0;
 
 	// 加载框架层脚本
-	ret = ExecFile("base/preload.lua");
-	if (ret != 1) return 0;
+	//ret = ExecFile("base/preload.lua");
+	//if (ret != 1) return 0;
 
 	// 启动循环
 	uv_run(g_Loop, UV_RUN_DEFAULT);
 
-	luaL_dostring(g_Lua, "engine.stop()");
+	//luaL_dostring(g_Lua, "engine.stop()");
 	lua_close(g_Lua);
 	g_Lua = NULL;
 	uv_loop_close(g_Loop);

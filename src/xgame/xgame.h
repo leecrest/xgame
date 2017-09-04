@@ -18,7 +18,7 @@ typedef struct _GameConfig GameConfig;
 int InitLog(const char* file);
 void Log(const char* fmt, ...);
 
-int Connect2Net(const char* ip, uint port);
+int Connect2Gate(const char* ip, uint port);
 
 
 #endif
